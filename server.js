@@ -1,9 +1,9 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const connectDB = require("./src/config/db");
-const githubRoutes = require("./src/routes/githubRoutes");
-const { verifyApiKey } = require("./src/middleware/authMiddleware");
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import connectDB from "./src/config/db.js";
+import githubRoutes from "./src/routes/githubRoutes.js";
+import { verifyApiKey } from "./src/middleware/authMiddleware.js";
 
 const app = express();
 app.use(express.json());

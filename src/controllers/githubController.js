@@ -1,5 +1,5 @@
-const axios = require("axios");
-const rateLimit = require("express-rate-limit");
+import axios from "axios";
+import rateLimit from "express-rate-limit";
 
 const GITHUB_API_URL = "https://api.github.com";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -14,14 +14,14 @@ const githubAPI = axios.create({
 });
 
 // 🛑 Rate limiter for GitHub API requests (5 requests per minute per IP)
-const githubLimiter = rateLimit({
+export const githubLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 5, // Max 5 requests per minute per IP
   message: { error: "Too many requests, please try again later." },
 });
 
 // 1️⃣ Get GitHub User Data + Repos
-exports.getGitHubProfile = async (req, res) => {
+export const getGitHubProfile = async (req, res) => {
   try {
     // Fetch user data
     const { data: user } = await githubAPI.get("/user");
@@ -38,7 +38,7 @@ exports.getGitHubProfile = async (req, res) => {
       public_repos: user.public_repos,
       avatar_url: user.avatar_url,
       bio: user.bio,
-      repos: repos.map(repo => ({
+      repos: repos.map((repo) => ({
         name: repo.name,
         url: repo.html_url,
       })),
@@ -53,7 +53,7 @@ exports.getGitHubProfile = async (req, res) => {
 };
 
 // 2️⃣ Get Repository Details
-exports.getRepoDetails = async (req, res) => {
+export const getRepoDetails = async (req, res) => {
   try {
     const { repo } = req.params;
 
@@ -85,7 +85,7 @@ exports.getRepoDetails = async (req, res) => {
 };
 
 // 3️⃣ Create a GitHub Issue
-exports.createIssue = async (req, res) => {
+export const createIssue = async (req, res) => {
   try {
     const { repo } = req.params;
     const { title, body } = req.body;
@@ -113,6 +113,3 @@ exports.createIssue = async (req, res) => {
     });
   }
 };
-
-// Export rate limiter
-exports.githubLimiter = githubLimiter;

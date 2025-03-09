@@ -1,11 +1,11 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   getGitHubProfile,
   getRepoDetails,
   createIssue,
   githubLimiter,
-} = require("../controllers/githubController");
-const { verifyApiKey } = require("../middleware/authMiddleware");
+} from "../controllers/githubController.js";
+import { verifyApiKey } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.get("/", verifyApiKey, githubLimiter, getGitHubProfile);
 router.get("/:repo", verifyApiKey, githubLimiter, getRepoDetails);
 router.post("/:repo/issues", verifyApiKey, githubLimiter, createIssue);
 
-module.exports = router;
+export default router;
